@@ -61,7 +61,7 @@ func (cw *compressWriter) Flush() (err error) {
 	}
 	compressedSize += CompressHeaderSize
 	// fill the header, compressed_size_32 + uncompressed_size_32
-	cw.zdata[16] = LZ4
+	cw.zdata[16] = byte(LZ4)
 	binary.LittleEndian.PutUint32(cw.zdata[17:], uint32(compressedSize))
 	binary.LittleEndian.PutUint32(cw.zdata[21:], uint32(cw.pos))
 

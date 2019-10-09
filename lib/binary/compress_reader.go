@@ -85,7 +85,8 @@ func (cr *compressReader) readCompressedData() (err error) {
 	cr.data = cr.data[:decompressedSize]
 
 	// @TODO checksum
-	if cr.header[16] == LZ4 {
+	switch CompressionMethodByte(cr.header[16]) {
+	case LZ4:
 		n, err = cr.reader.Read(cr.zdata)
 		if err != nil {
 			return
@@ -99,7 +100,15 @@ func (cr *compressReader) readCompressedData() (err error) {
 		if err != nil {
 			return
 		}
-	} else {
+	case NONE:
+		n, err = cr.reader.Read(cr.data)
+		if err != nil {
+			return
+		}
+		if n != len(cr.data) {
+			return fmt.Errorf("Decompress read size not match")
+		}
+	default:
 		return fmt.Errorf("Unknown compression method: 0x%02x ", cr.header[16])
 	}
 

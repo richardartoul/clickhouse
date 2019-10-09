@@ -4,8 +4,8 @@ type CompressionMethodByte byte
 
 const (
 	NONE CompressionMethodByte = 0x02
-	LZ4                        = 0x82
-	ZSTD                       = 0x90
+	LZ4  CompressionMethodByte = 0x82
+	ZSTD CompressionMethodByte = 0x90
 )
 
 const (
